@@ -43,6 +43,22 @@ app.post('/products', async(req, res) => {
     }
 });
 
+//update product
+app.put('/products/:id', async(req, res) => {
+    try{
+        const {id} = req.params;
+        const product = await Product.findByIdAndUpdate(id, req.body);
+        //product doesn't exist in db
+        if(!product){
+            return res.status(404).json({message: `cannot find any product with ID ${id}`});
+        }
+        res.status(200).json(product);
+
+    }catch( error ){
+        res.status(500).json({message: error.message});
+    }
+});
+
 mongoose.
 connect('mongodb+srv://admin:JhmLOqC8iVqxmtfb@fsaapi.zucf0dn.mongodb.net/Node-API?retryWrites=true&w=majority')
 .then(() => {

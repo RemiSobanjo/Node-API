@@ -2,6 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const productRoute = require('./routes/productRoute.js');
+//const userRoute = require('./routes/userRoute.js');
+const errorMiddleware = require('./middleware/errorMiddleware');
 
 const app = express();
 
@@ -14,6 +16,7 @@ app.use(express.urlencoded({extended : false}));
 //routes
 
 app.use('/api/products', productRoute);
+//app.use('/api/users',userRoute);
 
 app.get('/', (req, res) => {
     res.send('Hello NODE API');
@@ -22,6 +25,8 @@ app.get('/', (req, res) => {
 app.get('/blog', (req, res) => {
     res.send('Hello Blog, My name is Remi');
 });
+
+app.use(errorMiddleware);
 
 mongoose.
 connect(MONGO_URL)
